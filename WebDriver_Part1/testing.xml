@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite" parallel="false">
+  <test name="Test">
+    <classes>
+      <class name="webriver_1.SayHello"/>
+      <class name="webriver_1.SayHelloTestNG"/>
+      <class name="webriver_1.UserTestNG"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
