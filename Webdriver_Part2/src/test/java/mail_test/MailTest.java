@@ -27,10 +27,10 @@ public class MailTest {
 		
 	 }
 
-    @AfterClass
- 	 public void kill() {
-    	driver.close();
-	 }
+    //@AfterClass
+ 	// public void kill() {
+    //	driver.close();
+	// }
   
 
 	
@@ -42,13 +42,19 @@ public class MailTest {
 	  loginPage.fillLoginPassword("bellator123");
 	  HomePage homePage = loginPage.goToHome();
 	  homePage.successLogin();
-	  NewMailPage newMailPage =homePage.goToNewMail();
+	  NewMailPage newMailPage = homePage.goToNewMail();
 	  newMailPage.fillAdress("m.nasevich@gmail.com");
 	  newMailPage.fillSubject("Selenium WebDriver");
 	  newMailPage.fillBody("test page objects");
 	  newMailPage.saveDraft();
 	  DraftsPage newDraftsPage =newMailPage.goToDrafts();
 	  newDraftsPage.checkForDraft();
+	  MailPage mailPage = newDraftsPage.goToMail();
+	  mailPage.addressEquals("m.nasevich@gmail.com");
+	  mailPage.subjectEquals("Selenium WebDriver");
+	  mailPage.bodyEquals("test page objects");
+	  mailPage.sendMessage();
+	  //DraftsPage newDraftsPage = MailPage.toDrafts();
 	  
 	  
 	  
