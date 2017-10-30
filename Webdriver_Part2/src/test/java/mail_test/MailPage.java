@@ -4,24 +4,32 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-public class MailPage {
+public class MailPage extends AbstractPage{
 
 	WebDriver driver;
-	private static final By ADDRESS_LOCATOR = By.xpath("//textarea[@data-original-name='To']");
+	private static final By FILLED_ADDRESS_LOCATOR = By.id("compose_to");
+	private static final By FILLED_SUBJECT_LOCATOR = By.cssSelector("div.b-datalist__item__subj");
 	private static final By SUBJECT_LOCATOR = By.xpath("//input[@name='Subject']");
 	private static final By MESSAGE_LOCATOR = By.xpath("//body[@id='tinymce']");
 	private static final By SEND_LOCATOR = By.xpath("//div[@data-name='send']");
 	private static final By DRAFTS_LOCATOR = By.xpath("//a[@data-mnemo='drafts']");
-	//private static final By DRAFTS_LOCATOR = By.xpath("//a[@data-mnemo='drafts']");
 	
 	
 	
 	public MailPage(WebDriver driver) {
-		this.driver = driver;
+		this.driver=driver;
 	}
 	
-	public void addressEquals(String query){
-        Assert.assertEquals((ADDRESS_LOCATOR), query);
+	public String readAddress(){
+		//waitForElementPresent(FILLED_ADDRESS_LOCATOR);
+		String addressValue = driver.findElement(FILLED_ADDRESS_LOCATOR).getAttribute("value");
+        return (addressValue);
+	}
+	
+	public String readSubject(){
+		waitForElementPresent(FILLED_ADDRESS_LOCATOR);
+		String subjectValue = driver.findElement(FILLED_SUBJECT_LOCATOR).getText();
+        return (subjectValue);
 	}
 	
 	public void subjectEquals(String query){

@@ -7,12 +7,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class AbstractPage {
-
+	private  WebDriver driver;
 	public static final int WAIT_FOR_ELEMENT_SEC = 10;
-	private WebDriver driver;
+	
+	//public AbstractPage(WebDriver driver) {
+	//	this.driver = driver;
+	//}
 	
 	public boolean isElementPresent(By locator) {
-		return driver.findElement(locator).isDisplayed();
+		return !driver.findElements(locator).isEmpty();
 	}
 	
 	public void waitForElementPresent(By locator) {

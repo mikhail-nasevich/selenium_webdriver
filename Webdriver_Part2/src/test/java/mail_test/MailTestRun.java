@@ -2,35 +2,32 @@ package mail_test;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.concurrent.TimeUnit; 
 
-public class MailTest {
+public class MailTestRun {
 	
 	private WebDriver driver;
 	
 
   @BeforeClass (description = "Start Browser")
-  public void initBrowser () {
+  private void initBrowser () {
 	  System.setProperty("webdriver.chrome.driver", "d:\\install\\WebDriver\\chromedriver.exe");
 	  driver = new ChromeDriver();
+	  driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+	  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	  driver.manage().window().maximize();
 	 }
   
-	@BeforeClass (dependsOnMethods = "initBrowser", description = "Add implicitly")
-	 public void addTimeout () {
-		// setting standard timeout
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		
-	 }
-
-    //@AfterClass
- 	// public void kill() {
-    //	driver.close();
-	// }
+	
+    @AfterClass
+ 	public void kill() {
+    	driver.close();
+	}
   
 
 	
@@ -38,24 +35,29 @@ public class MailTest {
   public void testMail() {
 	  LoginPage loginPage = new LoginPage(driver);
 	  loginPage.open();
+	  loginPage.closePopUp();
 	  loginPage.fillLoginEmail("beltests");
 	  loginPage.fillLoginPassword("bellator123");
 	  HomePage homePage = loginPage.goToHome();
 	  homePage.successLogin();
 	  NewMailPage newMailPage = homePage.goToNewMail();
-	  newMailPage.fillAdress("m.nasevich@gmail.com");
+	  newMailPage.fillAddress("m.nasevich@gmail.com");
 	  newMailPage.fillSubject("Selenium WebDriver");
 	  newMailPage.fillBody("test page objects");
 	  newMailPage.saveDraft();
-	  DraftsPage newDraftsPage =newMailPage.goToDrafts();
-	  newDraftsPage.checkForDraft();
-	  MailPage mailPage = newDraftsPage.goToMail();
-	  mailPage.addressEquals("m.nasevich@gmail.com");
-	  mailPage.subjectEquals("Selenium WebDriver");
-	  mailPage.bodyEquals("test page objects");
+	  DraftsPage draftsPage =newMailPage.goToDrafts();
+	  draftsPage.checkForDraft();
+	  MailPage mailPage = draftsPage.goToMail();
+	  String actualAddress = mailPage.readAddress();
+	  Assert.assertEquals(actualAddress, "m.nasevich@gmail.com,");
+	  String actualSubject = mailPage.readSubject();
+	  Assert.assertEquals(actualSubject, "Selenium WebDriver");
+	  //mailPage.bodyEquals("test page objects");
 	  mailPage.sendMessage();
-	  //DraftsPage newDraftsPage = MailPage.toDrafts();
-	  
+	  draftsPage.checkNoDraft();
+	  SentPage sentPage = draftsPage.goToSent();
+	  sentPage.checkForSent();
+	  sentPage.logOut();
 	  
 	  
 	  

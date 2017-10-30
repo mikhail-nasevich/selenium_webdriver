@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-public class HomePage {
+public class HomePage extends AbstractPage{
 	WebDriver driver;
 	private static final boolean LOGGED_LOCATOR = By.id("PH_user-email") != null;
 	private static final By NEWMAIL_BUTTON_LOCATOR = By.cssSelector(".b-toolbar__item");
