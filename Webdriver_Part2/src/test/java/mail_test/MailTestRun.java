@@ -48,22 +48,22 @@ public class MailTestRun {
 	  DraftsPage draftsPage =newMailPage.goToDrafts();
 	  draftsPage.checkForDraft();
 	  MailPage mailPage = draftsPage.goToMail();
+	  //verify address. add "," after address 
 	  String actualAddress = mailPage.readAddress();
 	  Assert.assertEquals(actualAddress, "m.nasevich@gmail.com,");
+	  // verify subject of email
 	  String actualSubject = mailPage.readSubject();
 	  Assert.assertEquals(actualSubject, "Selenium WebDriver");
-	  //mailPage.bodyEquals("test page objects");
+	  // verify text of mail
+	  String actualMessage = mailPage.readMessage();
+	  Assert.assertEquals(actualMessage, "test page objects");
 	  mailPage.sendMessage();
 	  draftsPage.checkNoDraft();
 	  SentPage sentPage = draftsPage.goToSent();
 	  sentPage.checkForSent();
 	  sentPage.logOut();
 	  
-	  
-	  
-	  
-	  
-	  
+		  
   }
   
 }
