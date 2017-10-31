@@ -12,6 +12,11 @@ import java.util.concurrent.TimeUnit;
 public class MailTestRun {
 	
 	private WebDriver driver;
+	private static final String LOGIN = "beltests";
+	private static final String PASSWORD = "bellator123";
+	private static final String EMAIL = "m.nasevich@gmail.com";
+	private static final String SUBJECT = "Selenium WebDriver";
+	private static final String MAILTEXT = "Test page objects";
 	
 
   @BeforeClass (description = "Start Browser")
@@ -36,27 +41,27 @@ public class MailTestRun {
 	  LoginPage loginPage = new LoginPage(driver);
 	  loginPage.open();
 	  loginPage.closePopUp();
-	  loginPage.fillLoginEmail("beltests");
-	  loginPage.fillLoginPassword("bellator123");
+	  loginPage.fillLoginEmail(LOGIN);
+	  loginPage.fillLoginPassword(PASSWORD);
 	  HomePage homePage = loginPage.goToHome();
 	  homePage.successLogin();
 	  NewMailPage newMailPage = homePage.goToNewMail();
-	  newMailPage.fillAddress("m.nasevich@gmail.com");
-	  newMailPage.fillSubject("Selenium WebDriver");
-	  newMailPage.fillBody("test page objects");
+	  newMailPage.fillAddress(EMAIL);
+	  newMailPage.fillSubject(SUBJECT);
+	  newMailPage.fillBody(MAILTEXT);
 	  newMailPage.saveDraft();
 	  DraftsPage draftsPage =newMailPage.goToDrafts();
 	  draftsPage.checkForDraft();
 	  MailPage mailPage = draftsPage.goToMail();
 	  //verify address. add "," after address 
 	  String actualAddress = mailPage.readAddress();
-	  Assert.assertEquals(actualAddress, "m.nasevich@gmail.com,");
+	  Assert.assertEquals(actualAddress, EMAIL+",");
 	  // verify subject of email
 	  String actualSubject = mailPage.readSubject();
-	  Assert.assertEquals(actualSubject, "Selenium WebDriver");
+	  Assert.assertEquals(actualSubject, SUBJECT);
 	  // verify text of mail
 	  String actualMessage = mailPage.readMessage();
-	  Assert.assertEquals(actualMessage, "test page objects");
+	  Assert.assertEquals(actualMessage, MAILTEXT);
 	  mailPage.sendMessage();
 	  draftsPage.checkNoDraft();
 	  SentPage sentPage = draftsPage.goToSent();
